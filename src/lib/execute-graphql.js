@@ -31,19 +31,14 @@ export const executeGraphQL = async (service, query, variables = {}) => {
     }
 
     try {
-        console.log('variables', variables);
         const cleanedVariables = await deepClean(variables);
-        console.log('cleanedVariables', cleanedVariables);
 
         //let API_URL = `https://api.wize.works/${service}/graphql`;
         let API_URL = "http://localhost:3005/graphql"; // For local development
-
         const body = JSON.stringify({
             query: query,
             variables: cleanedVariables, //deepClean(variables),
         });
-
-        console.log('🚀 Request sent to:', API_URL);
 
         const response = await fetch(API_URL, {
             method: 'POST',
@@ -53,8 +48,6 @@ export const executeGraphQL = async (service, query, variables = {}) => {
             },
             body: body,
         });
-
-        //console.log('📥 Response status:', response.status);
 
         if (!response.ok) {
             const errorData = await response.json();

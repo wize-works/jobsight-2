@@ -1,6 +1,9 @@
 import Link from 'next/link';
 import { getProjectById } from '../actions/queries';
 import { ProjectOverview } from './components/overview';
+import { RecentActivity } from './components/recent-activity';
+import { WeatherWidget } from '@/components/shared/weather';
+import { ProgressWidget } from './components/progress';
 
 export const ProjectsDetailPage = async ({ params }) => {
     const { id } = await params;
@@ -24,7 +27,16 @@ export const ProjectsDetailPage = async ({ params }) => {
                 <a className='tab'>Files</a>
                 <a className='tab'>Comments</a>
             </div>
-            <ProjectOverview project={project} />
+            <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
+                <div className='col-span-2 space-y-6'>
+                    <ProjectOverview project={project} />
+                    <RecentActivity project={project} />
+                </div>
+                <div className='flex flex-col gap-4'>
+                    <ProgressWidget project={project} />
+                    <WeatherWidget location={project.location} />
+                </div>
+            </div>
         </div>
     );
 };

@@ -1,62 +1,61 @@
-import { getProgressColorClass, getBadgeColorClass } from "@/lib/styles";
-import RecentActivity from "./recent-activity";
+import { getProgressColorClass } from "@/lib/styles";
 import { getProjectStatusMeta } from "@/lib/enums";
 
 
 export const ProjectOverview = ({ project }) => {
-    const { name, status, progress, description, createdAt } = project;
+    const { name, status, progress, description, createdAt, address, client, budget, updatedAt, location } = project;
     const statusMeta = getProjectStatusMeta(status);
+
+    // Format currency for budget
+    const formattedBudget = budget ? new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD'
+    }).format(budget) : 'Not set';
 
     return (
         <>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="card w-full bg-base-100 shadow-xl col-span-2">
-                    <div className="card-body">
-                        <h2 className="card-title">Project Details</h2>
-                        <p className="">General information about this project</p>
-                        <h4>Description</h4>
-                        <p>{description || "No description provided"}</p>
+            <div className="card w-full bg-base-100 shadow-xl col-span-2">
+                <div className="card-body">
+                    <h2 className="card-title">Project Details</h2>
+                    <p className="">General information about this project</p>
+                    <hr className="my-2" />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        <div>
+                            <h4 className="font-semibold text-lg">Description</h4>
+                            <p>{description || "No description provided"}</p>
 
+                            <h4 className="font-semibold text-lg mt-4">Client</h4>
+                            <p>{client || "Not specified"}</p>
 
-
-                    </div>
-                </div>
-                <div className="card w-full bg-base-100 shadow-xl">
-                    <div className="card-body">
-                        <h2 className="card-title mb-[-8]">Progress</h2>
-                        <p className="">Current progress of the project</p>
-                        <p className="flex justify-between"><strong>Status:</strong><span className={`badge ${statusMeta.badge}`}>{statusMeta.label}</span></p>
-                        <p className="flex justify-between items-center"><strong>Progress:</strong><span><span className="text-3xl font-bold">{progress}</span>%</span></p>
-                        <div className="progress w-full">
-                            <div
-                                className={`progress-bar ${getProgressColorClass(progress)}`}
-                                style={{ width: `${progress}%` }}
-                            ></div>
+                            <h4 className="font-semibold text-lg mt-4">Budget</h4>
+                            <p>{formattedBudget}</p>
                         </div>
-                        <div className="flex justify-between mt-2">
-                            <div className="flex flex-col text-left space-x-2 bg-base-200 py-2 px-4 rounded-lg">
-                                <p>Start Date</p>
-                                <p>
-                                    {project.startDate ?
-                                        <span className="text-sm">{new Date(project.startDate).toLocaleDateString()}</span> :
-                                        <span className="text-sm">Not Set</span>
-                                    }
-                                </p>
+
+                        <div>
+                            <h4 className="font-semibold text-lg">Address</h4>
+                            {address ? (
+                                <div>
+                                    <p>{address.street || ""}</p>
+                                    <p>{address.city || ""}{address.city && address.state ? ', ' : ''}{address.state || ""} {address.postalCode || ""}</p>
+                                    <p>{address.country || ""}</p>
+                                </div>
+                            ) : (
+                                <p>No address provided</p>
+                            )}
+
+                            <div className="mt-4">
+                                <h4 className="font-semibold text-lg">Created</h4>
+                                <p>{createdAt ? new Date(createdAt).toLocaleDateString() : "Unknown"}</p>
                             </div>
-                            <div className="flex flex-col text-left space-x-2 bg-base-200 py-2 px-4 rounded-lg">
-                                <p>End Date:</p>
-                                <p>
-                                    {project.endDate ?
-                                        <span className="text-sm">{new Date(project.endDate).toLocaleDateString()}</span> :
-                                        <span className="text-sm">Not Set</span>
-                                    }
-                                </p>
+
+                            <div className="mt-4">
+                                <h4 className="font-semibold text-lg">Last Updated</h4>
+                                <p>{updatedAt ? new Date(updatedAt).toLocaleDateString() : "Unknown"}</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <RecentActivity project={project} />
         </>
     );
 };

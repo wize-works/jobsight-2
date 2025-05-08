@@ -32,18 +32,14 @@ export const ProjectsNewPage = () => {
     return (
         <div className="space-y-1">
             <form action={submitForm}>
-                <div className='flex items-center justify-between'>
-                    <Link href="/projects" className="btn btn-link">
+                <div className='flex items-center mb-4 text-secondary'>
+                    <Link href="/projects" className="">
                         <i className="fas fa-arrow-left mr-2"></i>
                         Back to Projects
                     </Link>
-                    <button type="submit" className="btn btn-primary">
-                        <i className="fas fa-save mr-2"></i>
-                        Save Project
-                    </button>
                 </div>
                 <h1 className="text-2xl font-bold">Create New Project</h1>
-                <p className="text-sm text-gray-500 pb-6">Fill in the details below to create a new project.</p>
+                <p className="text-sm pb-6">Fill in the details below to create a new project.</p>
 
                 <div className="card bg-base-100 shadow-lg p-6">
                     <h2 className="text-lg font-semibold mb-0">Project Information</h2>
@@ -52,12 +48,18 @@ export const ProjectsNewPage = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                         <fieldset className="fieldset">
                             <legend className="fieldset-legend">Project Name</legend>
-                            <input name="name" type="text" className="input validator w-full" placeholder="Project Name" required />
+                            <div className="indicator w-full">
+                                <span className="indicator-item indicator-end indicator-bottom mr-10 badge badge-error badge-xs">required</span>
+                                <input name="name" type="text" className="input validator w-full" placeholder="Project Name" required />
+                            </div>
                             <div className="validator-hint">This field is required.</div>
                         </fieldset>
                         <fieldset className="fieldset">
                             <legend className="fieldset-legend">Location</legend>
-                            <input name="location" type="text" className="input validator w-full" placeholder="Location" required />
+                            <div className="indicator w-full">
+                                <span className="indicator-item indicator-end indicator-bottom mr-10 badge badge-error badge-xs">required</span>
+                                <input name="location" type="text" className="input validator w-full" placeholder="Location" required />
+                            </div>
                             <p className="validator-hint">This field is required</p>
                         </fieldset>
                     </div>
@@ -70,19 +72,21 @@ export const ProjectsNewPage = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                         <fieldset className="fieldset">
                             <legend className="fieldset-legend">Status</legend>
-                            <select name="status" className="select select-bordered w-full" required>
-                                <option value="">Select Status</option>
-                                {PROJECT_STATUS_OPTIONS.map((status) => (
-                                    <option key={status.value} value={status.value}>
-                                        {status.label}
-                                    </option>
-                                ))}
-                            </select>
+                            <div className="indicator w-full">
+                                <span className="indicator-item indicator-end indicator-bottom mr-10 badge badge-error badge-xs">required</span>
+                                <select name="status" className="select select-bordered w-full" required>
+                                    <option value="">Select Status</option>
+                                    {PROJECT_STATUS_OPTIONS.map((status) => (
+                                        <option key={status.value} value={status.value}>
+                                            {status.label}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
                         </fieldset>
                         <fieldset className="fieldset">
                             <legend className="fieldset-legend">Progress</legend>
                             <input name="progress" type="range" className="range range-primary w-full" placeholder="Progress (%)" min="0" max="100" required />
-                            <p className="label">This field is required</p>
                         </fieldset>
                         <fieldset className="fieldset">
                             <legend className="fieldset-legend">Start Date</legend>
@@ -99,7 +103,10 @@ export const ProjectsNewPage = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                         <fieldset className="fieldset">
                             <legend className="fieldset-legend">Client</legend>
-                            <input name="client" type="text" className="input focus:input-primary w-full" placeholder="Client Name" required />
+                            <div className="indicator w-full">
+                                <span className="indicator-item indicator-end indicator-bottom mr-10 badge badge-error badge-xs">required</span>
+                                <input name="client" type="text" className="input focus:input-primary w-full" placeholder="Client Name" required />
+                            </div>
                             <p className="validator-hint">This field is required</p>
                         </fieldset>
                         <fieldset className="fieldset">
@@ -108,17 +115,26 @@ export const ProjectsNewPage = () => {
                         </fieldset>
                         <fieldset className="fieldset">
                             <legend className="fieldset-legend">Budget</legend>
-                            <label className="input validator w-full">
-                                <i className="fas fa-dollar-sign"></i>
-                                <input name="budget" type="number" placeholder="5,000" required />
-                            </label>
+                            <div className="indicator w-full">
+                                <span className="indicator-item indicator-end indicator-bottom mr-10 badge badge-error badge-xs">required</span>
+
+                                <label className="input validator w-full">
+                                    <i className="fas fa-dollar-sign"></i>
+                                    <input name="budget" type="number" placeholder="5,000" required />
+                                </label>
+                            </div>
                             <p className="validator-hint">This field is required</p>
                         </fieldset>
                     </div>
-
-                </div>
-            </form>
-        </div>
+                    <div>
+                        <button type="submit" className="btn btn-primary">
+                            <i className="fas fa-save mr-2"></i>
+                            Save Project
+                        </button>
+                    </div>
+                </div >
+            </form >
+        </div >
     );
 };
 

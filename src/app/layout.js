@@ -6,6 +6,7 @@ import { Sidebar } from "@/components/layout/sidebar/sidebar";
 import { ThemeProvider } from "@/components/theme/provider";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
+import { ClientValidationSuppressor } from "@/components/validationSuppressor";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -32,7 +33,8 @@ export default function RootLayout({ children }) {
                         <Sidebar />
                         <div className="flex-1 flex flex-col bg-base-200 min-h-screen pb-auto">
                             <Header />
-                            <div className="grow p-6">
+                            <div className="grow p-6 max-w-7xl mx-auto">
+                                {/* <ClientValidationSuppressor /> */}
                                 {children}
                             </div>
                             <Footer />

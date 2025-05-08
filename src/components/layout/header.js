@@ -42,7 +42,7 @@ export const Header = () => {
                                     <path d="m21 21-4.3-4.3"></path>
                                 </g>
                             </svg>
-                            <input type="search" required placeholder="Search" />
+                            <input type="search" placeholder="Search" />
                         </label>
                     </div>
                 </div>

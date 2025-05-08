@@ -1,8 +1,8 @@
 export const getProgressColorClass = (percentage) => {
-    if (percentage >= 75) return 'bg-success';
-    if (percentage >= 50) return 'bg-accent';
-    if (percentage >= 25) return 'bg-warning';
-    return 'bg-error';
+    if (percentage >= 75) return 'progress-success';
+    if (percentage >= 50) return 'progress-accent';
+    if (percentage >= 25) return 'progress-warning';
+    return 'progress-error';
 };
 
 export const getRadialProgressColorClass = (percentage) => {
@@ -27,6 +27,6 @@ export const getBadgeColorClass = (status) => {
         case 'completed':
             return 'badge-secondary'
         default:
-            return 'badge-secondary';
+            return 'badge-ghost';
     }
 }

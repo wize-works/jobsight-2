@@ -1,0 +1,61 @@
+import Image from "next/image";
+import { getProgressColorClass, getBadgeColorClass } from "@/lib/styles";
+import Link from "next/link";
+import { getProjectStatusMeta } from "@/lib/enums";
+
+export const Card = ({ project }) => {
+    const status = getProjectStatusMeta(project.status);
+    return (
+        <div className="card bg-base-100 shadow-lg relative" >
+            <figure className="max-h-60 overflow-hidden">
+                <Image
+                    width={800}
+                    height={600}
+                    src={project.image || "https://placehold.co/800x600/png"}
+                    alt={project.name}
+                    className="" />
+            </figure>
+            <div className="card-body grow">
+                <div className="absolute top-0 left-0 right-0 h-1">
+                    <div className={`h-full rounded-full ${getProgressColorClass(project.progress)}`} style={{ width: `${project.progress}%` }} ></div>
+                </div>
+                <div className="absolute top-2 right-2">
+                    <span className={`badge ${status.badge} `}>
+                        {status.label}
+                    </span>
+                </div>
+                <h2 className="text-lg line-clamp-2 font-semibold">
+                    <Link href={`/projects/${project._id}`} className="hover:text-primary">{project.name}</Link>
+                </h2>
+                <p className="mt-2">{project.description}</p>
+                <div className="flex items-center flex-wrap gap-y-2">
+                    {project.location && (
+                        <></>
+                    )}
+                    <div className="w-full md:w-1/2 flex items-center">
+                        <i className="far fa-map-marker-alt mr-2"></i>
+                        {project.location || <>unknown</>}
+                    </div>
+                    <div className="w-full md:w-1/2 flex items-center">
+                        <i className="far fa-building mr-2"></i>
+                        {project.client || <>unknown</>}
+                    </div>
+                    <div className="w-full md:w-1/2 flex items-center">
+                        <i className="far fa-calendar-alt mr-2"></i>
+                        {project.startDate}
+                        {new Date(project.startDate).toLocaleDateString()}
+                    </div>
+                </div>
+            </div>
+            <div className="flex-none card-body rounded-b-lg bg-base-200/50 border-t-1 border-base-300 flex flex-row justify-between items-center p-3 text-xs">
+                <div className="flex items-center space-x-2">
+                    <i className="far fa-user mr-2"></i>
+                    <span>Created by: {project.createdBy || "unknown"}</span>
+                </div>
+                <span>{project.progress || 0}%</span>
+            </div>
+        </div>
+    );
+};
+
+export default Card;

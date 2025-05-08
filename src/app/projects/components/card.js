@@ -2,29 +2,10 @@ import Image from "next/image";
 import { getProgressColorClass, getBadgeColorClass } from "@/lib/styles";
 import Link from "next/link";
 import { getProjectStatusMeta } from "@/lib/enums";
+import { formatAddress } from "@/lib/format-address";
 
 export const Card = ({ project }) => {
     const status = getProjectStatusMeta(project.status);
-
-    // Format address in a more standard way
-    const formatAddress = (address) => {
-        if (!address) return "No address";
-
-        const parts = [];
-
-        if (address.street) parts.push(address.street);
-
-        const cityStateZip = [
-            address.city,
-            address.state,
-            address.postalCode
-        ].filter(Boolean).join(", ");
-
-        if (cityStateZip) parts.push(cityStateZip);
-        if (address.country) parts.push(address.country);
-
-        return parts.join(", ") || "Address incomplete";
-    };
 
     return (
         <div className="card bg-base-100 shadow-lg relative" >

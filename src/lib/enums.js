@@ -17,5 +17,5 @@ export const PROJECT_STATUSES = Object.fromEntries(
 
 export const getProjectStatusMeta = (status) => {
     const statusMeta = PROJECT_STATUS_OPTIONS.find((s) => s.value === status);
-    return statusMeta || { label: "Unknown", badge: "badge-neutral", icon: "fas fa-question", iconColor: "text-neutral", iconBackground: "bg-neutral/20" };
+    return statusMeta || { label: "Unknown", badge: "bg-neutral/20 ", icon: "fas fa-question", iconColor: "text-neutral", iconBackground: "bg-neutral/20" };
 }

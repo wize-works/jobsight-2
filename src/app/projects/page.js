@@ -86,7 +86,7 @@ export const ProjectsPage = async ({ searchParams }) => {
             <Header />
             <Filter currentView={view} currentFilter={filter} />
             {view === "grid" ? (
-                <div>
+                <div className="w-full">
                     <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">
                         {data.map((project, index) => (
                             <Card key={index} project={project} />
@@ -94,7 +94,7 @@ export const ProjectsPage = async ({ searchParams }) => {
                     </div>
                 </div>
             ) : (
-                <div>
+                <div className="min-w-full">
                     <Table projects={data} />
                 </div>
             )}

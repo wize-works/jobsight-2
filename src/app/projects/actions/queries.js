@@ -18,6 +18,7 @@ export const getProjects = async ({ options = {} }) => {
                         country
                     }
                     progress
+                    client
                     description
                     startDate
                     endDate

@@ -5,7 +5,7 @@ import { getProjectStatusMeta } from "@/lib/enums";
 const getClientProjects = async (clientId) => {
     const service = 'wize-project';
     const query = `
-        query ($filter: Filter, $sort: Sort, $paging: Paging) {
+        query ($filter: ProjectFilter, $sort: ProjectSort, $paging: ProjectPaging) {
             findProjects(filter: $filter, sort: $sort, paging: $paging) {
                 count
                 data {

@@ -11,7 +11,7 @@ export const ClientOverview = ({ client }) => {
                 <div className="flex items-start gap-6">
                     <div className="rounded-xl overflow-hidden w-32 h-32 flex-shrink-0 bg-base-200 flex items-center justify-center">
                         {logo ? (
-                            <Image width={128} height={128} src={logo} alt={name} className="w-full h-full object-cover" />
+                            <Image width={128} height={128} src={"/banner.png"} alt={name} className="w-full h-full object-cover" />
                         ) : (
                             <i className="far fa-building text-5xl text-neutral/40"></i>
                         )}

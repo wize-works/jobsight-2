@@ -3,7 +3,7 @@ const service = 'wize-project';
 
 export const getProjects = async ({ options = {} }) => {
     const query = `
-        query ($filter: Filter, $sort: Sort, $paging: Paging) {
+        query ($filter: ProjectFilter, $sort: ProjectSort, $paging: ProjectPaging) {
             findProjects(filter: $filter, sort: $sort, paging: $paging) {
                 count
                 data {
@@ -111,5 +111,47 @@ export const getProjectCounts = async () => {
         return data;
     } else {
         throw new Error('Failed to fetch projects');
+    }
+};
+
+export const getClients = async ({ options = {} }) => {
+    const query = `
+        query ($filter: ClientFilter, $sort: ClientSort, $paging: ClientPaging) {
+            findClients(filter: $filter, sort: $sort, paging: $paging) {
+                count
+                data {
+                    _id
+                    name
+                }
+            }
+        }
+    `;
+    const filter = options.filter || null;
+    const sort = options.sort || { 'name': 'DESC' };
+    const paging = options.paging || null;
+    const refinedOptions = { filter, sort, paging };
+
+    const data = await executeGraphQL('wize-organization', query, refinedOptions);
+    if (data && data.findClients) {
+        return data.findClients;
+    } else {
+        throw new Error('Failed to fetch clients');
+    }
+};
+
+export const getClientById = async (id) => {
+    const query = `
+        query ($id: ID!) {
+            findClientById(id: $id) {
+                _id
+                name
+            }
+        }
+    `;
+    const data = await executeGraphQL('wize-organization', query, { id });
+    if (data && data.findClientById) {
+        return data.findClientById;
+    } else {
+        throw new Error('Failed to fetch client by ID');
     }
 };

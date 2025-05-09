@@ -3,8 +3,22 @@ import Link from "next/link";
 import { getClientStatusMeta } from "@/lib/enums";
 import { formatAddress } from "@/lib/format-address";
 
+// Helper function to validate URLs
+const isValidUrl = (url) => {
+    if (!url) return false;
+    try {
+        new URL(url);
+        return true;
+    } catch (e) {
+        return false;
+    }
+};
+
 export const Card = ({ client }) => {
     const status = getClientStatusMeta(client.status);
+
+    // Safely determine the image source
+    const imageSrc = isValidUrl(client.logo) ? client.logo : "/banner.png";
 
     return (
         <div className="card bg-base-100 shadow-lg relative" >
@@ -12,7 +26,7 @@ export const Card = ({ client }) => {
                 <Image
                     width={800}
                     height={600}
-                    src={client.logo || "/banner.png"}
+                    src={imageSrc}
                     alt={client.name || "Client Logo"}
                     className="" />
                 <div className="absolute top-2 right-2">

@@ -3,9 +3,20 @@ import { getProgressColorClass, getBadgeColorClass } from "@/lib/styles";
 import Link from "next/link";
 import { getProjectStatusMeta } from "@/lib/enums";
 import { formatAddress } from "@/lib/format-address";
+import { getClientById } from "../actions/queries";
 
-export const Card = ({ project }) => {
+export const Card = async ({ project }) => {
     const status = getProjectStatusMeta(project.status);
+    
+    // Fetch client data if client ID exists
+    let clientData = null;
+    if (project.client) {
+        try {
+            clientData = await getClientById(project.client);
+        } catch (error) {
+            console.error("Error fetching client data:", error);
+        }
+    }
 
     return (
         <div className="card bg-base-100 shadow-lg relative" >
@@ -37,7 +48,13 @@ export const Card = ({ project }) => {
                     )}
                     <div className="w-full md:w-1/2 flex items-center">
                         <i className="far fa-building mr-2"></i>
-                        {project.client || "unknown"}
+                        {clientData ? (
+                            <Link href={`/clients/${clientData._id}`} className="hover:text-primary">
+                                {clientData.name}
+                            </Link>
+                        ) : (
+                            "unknown"
+                        )}
                     </div>
                     <div className="w-full md:w-1/2 flex items-center">
                         <i className="far fa-calendar-alt mr-2"></i>

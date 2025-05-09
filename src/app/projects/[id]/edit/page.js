@@ -2,13 +2,16 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { updateProject } from "../../actions/mutations";
 import { PROJECT_STATUS_OPTIONS } from "@/lib/enums";
-import { getProjectById } from "../../actions/queries";
+import { getProjectById, getClients } from "../../actions/queries";
 import { LocationWidget } from "../../components/location";
 
 export const ProjectsEditPage = async ({ params }) => {
     const { id } = await params;
 
     const project = await getProjectById(id);
+    // Fetch clients for dropdown
+    const clientsResult = await getClients({ options: {} });
+    const clients = clientsResult?.data || [];
 
     const submitForm = async (formData) => {
         'use server';
@@ -47,8 +50,8 @@ export const ProjectsEditPage = async ({ params }) => {
     return (
         <div className="space-y-1">
             <form action={submitForm}>
-                <div className='flex items-center mb-4 text-secondary'>
-                    <Link href="/projects" className="">
+                <div className='flex items-center mb-4'>
+                    <Link href="/projects" className="btn">
                         <i className="fas fa-arrow-left mr-2"></i>
                         Back to Projects
                     </Link>
@@ -119,7 +122,14 @@ export const ProjectsEditPage = async ({ params }) => {
                                 <span className="indicator-item indicator-end indicator-middle -mr-8 badge badge-warning badge-xs">required</span>
                                 <legend className="fieldset-legend">Client</legend>
                             </div>
-                            <input name="client" type="text" className="input focus:input-primary w-full" placeholder="Client Name" required defaultValue={project.client} />
+                            <select name="client" className="select select-bordered w-full" required defaultValue={project.client}>
+                                <option value="">Select Client</option>
+                                {clients.map((client) => (
+                                    <option key={client._id} value={client._id}>
+                                        {client.name}
+                                    </option>
+                                ))}
+                            </select>
                             <p className="validator-hint">This field is required</p>
                         </fieldset>
                         <fieldset className="fieldset">

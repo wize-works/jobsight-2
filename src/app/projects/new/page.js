@@ -1,8 +1,13 @@
 import Link from "next/link";
 import { createNewProject } from "../actions/mutations";
+import { getClients } from "../actions/queries";
 import { PROJECT_STATUS_OPTIONS } from "@/lib/enums";
 
-export const ProjectsNewPage = () => {
+export const ProjectsNewPage = async () => {
+    // Fetch clients for dropdown
+    const clientsResult = await getClients({ options: {} });
+    const clients = clientsResult?.data || [];
+
     const submitForm = async (formData) => {
         'use server';
         const data = {
@@ -40,8 +45,8 @@ export const ProjectsNewPage = () => {
     return (
         <div className="space-y-1">
             <form action={submitForm}>
-                <div className='flex items-center mb-4 text-secondary'>
-                    <Link href="/projects" className="">
+                <div className='flex items-center mb-4'>
+                    <Link href="/projects" className="btn">
                         <i className="fas fa-arrow-left mr-2"></i>
                         Back to Projects
                     </Link>
@@ -113,7 +118,7 @@ export const ProjectsNewPage = () => {
                         </fieldset>
                         <fieldset className="fieldset">
                             <legend className="fieldset-legend">Progress</legend>
-                            <input name="progress" type="range" className="range range-primary w-full" placeholder="Progress (%)" value={0} min="0" max="100" required />
+                            <input name="progress" type="range" className="range range-primary w-full" placeholder="Progress (%)" defaultValue={0} min="0" max="100" required />
                         </fieldset>
                         <fieldset className="fieldset">
                             <div className="indicator -mt-1">
@@ -136,8 +141,14 @@ export const ProjectsNewPage = () => {
                                 <span className="indicator-item indicator-end indicator-middle -mr-8 badge badge-warning badge-xs">required</span>
                                 <legend className="fieldset-legend">Client</legend>
                             </div>
-                            <input name="client" type="text" className="input focus:input-primary w-full" placeholder="Client Name" required />
-                            <p className="validator-hint">This field is required</p>
+                            <select name="client" className="select select-bordered w-full" required>
+                                <option value="">Select Client</option>
+                                {clients.map((client, index) => (
+                                    <option key={index} value={client._id}>
+                                        {client.name}
+                                    </option>
+                                ))}
+                            </select>
                         </fieldset>
                         <fieldset className="fieldset">
                             <legend className="fieldset-legend">Client Contact</legend>

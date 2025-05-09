@@ -35,14 +35,14 @@ export const executeGraphQL = async (service, query, variables = {}) => {
 
         let API_URL = `https://api.wize.works/${service}/graphql`;
 
-        if (service === 'wize-organization') {
-            API_URL = "http://localhost:3015/graphql";
+        if (service === 'wize-media') {
+            API_URL = "http://localhost:3005/graphql";
         }
         const body = JSON.stringify({
             query: query,
             variables: cleanedVariables, //deepClean(variables),
         });
-
+        console.log('body', body);
         const response = await fetch(API_URL, {
             method: 'POST',
             headers: {

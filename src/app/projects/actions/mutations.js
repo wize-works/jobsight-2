@@ -2,7 +2,7 @@ import { executeGraphQL } from "@/lib/execute-graphql";
 const service = 'wize-project';
 export const createNewProject = async (project) => {
     const query = `
-        mutation ($input: Project!) {
+        mutation ($input: ProjectInput!) {
             createProject(input: $input) {
                 _id
                 name
@@ -26,7 +26,7 @@ export const createNewProject = async (project) => {
 
 export const updateProject = async (id, project) => {
     const query = `
-        mutation ($id: ID!, $input: Project!) {
+        mutation ($id: ID!, $input: ProjectInput!) {
             updateProject(id: $id, input: $input) {
                 _id
                 name

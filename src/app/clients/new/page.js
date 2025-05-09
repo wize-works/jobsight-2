@@ -2,8 +2,13 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createNewClient } from "../actions/mutations";
 import { CLIENT_STATUS_OPTIONS } from "@/lib/enums";
+import Image from "next/image";
+import dynamic from "next/dynamic";
+import ClientLogoUploader from "../components/logo-uploader";
+
 
 export const ClientsNewPage = () => {
+
     const submitForm = async (formData) => {
         'use server';
         const data = {
@@ -22,18 +27,16 @@ export const ClientsNewPage = () => {
                 postalCode: formData.get("postalCode"),
                 country: formData.get("country") || "USA"
             },
-            // Handle tags as a comma-separated string
-            tags: formData.get("tags") ? formData.get("tags").split(',').map(tag => tag.trim()) : []
+            tags: formData.get("tags") ? formData.get("tags").split(',').map(tag => tag.trim()) : [],
+            logo: formData.get("logo") || null,
         };
 
         const result = await createNewClient(data);
         if (result) {
             console.log("Client created successfully:", result);
-            // Redirect to the client details page
             redirect(`/clients/${result._id}`);
         } else {
             console.error("Failed to create client", result);
-            // Error handling would be implemented here
         }
     };
 
@@ -61,6 +64,12 @@ export const ClientsNewPage = () => {
                             </div>
                             <input name="name" type="text" className="input validator w-full" placeholder="Company Name" required />
                             <div className="validator-hint">This field is required.</div>
+                        </fieldset>
+
+                        <fieldset className="fieldset">
+                            <legend className="fieldset-legend">Company Logo</legend>
+                            <ClientLogoUploader element="logoUrl" />
+                            <input type="hidden" name="logo" id="logoUrl" />
                         </fieldset>
 
                         <fieldset className="fieldset">
@@ -96,66 +105,71 @@ export const ClientsNewPage = () => {
                     </div>
 
                     <hr className="my-4" />
-                    <h2 className="text-lg font-semibold mb-0">Contact Information</h2>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                        <fieldset className="fieldset">
-                            <div className="indicator -mt-1">
-                                <span className="indicator-item indicator-end indicator-middle -mr-8 badge badge-warning badge-xs">required</span>
-                                <legend className="fieldset-legend">Contact Person</legend>
+                        <div className="flex flex-col">
+                            <h2 className="text-lg font-semibold mb-0">Contact Information</h2>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                                <fieldset className="fieldset">
+                                    <div className="indicator -mt-1">
+                                        <span className="indicator-item indicator-end indicator-middle -mr-8 badge badge-warning badge-xs">required</span>
+                                        <legend className="fieldset-legend">Contact Person</legend>
+                                    </div>
+                                    <input name="contactPerson" type="text" className="input validator w-full" placeholder="Contact Person" required />
+                                    <div className="validator-hint">This field is required.</div>
+                                </fieldset>
+
+                                <fieldset className="fieldset">
+                                    <div className="indicator -mt-1">
+                                        <span className="indicator-item indicator-end indicator-middle -mr-8 badge badge-warning badge-xs">required</span>
+                                        <legend className="fieldset-legend">Email</legend>
+                                    </div>
+                                    <input name="email" type="email" className="input validator w-full" placeholder="Email" required />
+                                    <div className="validator-hint">This field is required.</div>
+                                    <div className="validator-hint">This field needs to be a valid email.</div>
+                                </fieldset>
+
+                                <fieldset className="fieldset">
+                                    <legend className="fieldset-legend">Phone</legend>
+                                    <input name="phone" type="tel" className="input input-bordered w-full" placeholder="Phone Number" />
+                                </fieldset>
+
+                                <fieldset className="fieldset">
+                                    <legend className="fieldset-legend">Website</legend>
+                                    <input name="website" type="url" className="input input-bordered w-full" placeholder="Website" />
+                                </fieldset>
                             </div>
-                            <input name="contactPerson" type="text" className="input validator w-full" placeholder="Contact Person" required />
-                            <div className="validator-hint">This field is required.</div>
-                        </fieldset>
+                        </div>
+                        <div>
+                            <h2 className="text-lg font-semibold mb-0">Address</h2>
 
-                        <fieldset className="fieldset">
-                            <div className="indicator -mt-1">
-                                <span className="indicator-item indicator-end indicator-middle -mr-8 badge badge-warning badge-xs">required</span>
-                                <legend className="fieldset-legend">Email</legend>
+                            <div className="grid grid-cols-1 md:grid-cols-6 gap-4 mt-4">
+                                <fieldset className="fieldset md:col-span-6">
+                                    <legend className="fieldset-legend">Street</legend>
+                                    <input name="street" type="text" className="input input-bordered w-full" placeholder="Street Address" />
+                                </fieldset>
+
+                                <fieldset className="fieldset md:col-span-3">
+                                    <legend className="fieldset-legend">City</legend>
+                                    <input name="city" type="text" className="input input-bordered w-full" placeholder="City" />
+                                </fieldset>
+
+                                <fieldset className="fieldset md:col-span-1">
+                                    <legend className="fieldset-legend">State</legend>
+                                    <input name="state" type="text" className="input input-bordered w-full" placeholder="State" />
+                                </fieldset>
+
+                                <fieldset className="fieldset md:col-span-2">
+                                    <legend className="fieldset-legend">Postal Code</legend>
+                                    <input name="postalCode" type="text" className="input input-bordered w-full" placeholder="Postal Code" />
+                                </fieldset>
+
+                                <fieldset className="fieldset md:col-span-2">
+                                    <legend className="fieldset-legend">Country</legend>
+                                    <input name="country" type="text" className="input input-bordered w-full" placeholder="Country" defaultValue="USA" />
+                                </fieldset>
                             </div>
-                            <input name="email" type="email" className="input validator w-full" placeholder="Email" required />
-                            <div className="validator-hint">This field is required.</div>
-                        </fieldset>
-
-                        <fieldset className="fieldset">
-                            <legend className="fieldset-legend">Phone</legend>
-                            <input name="phone" type="tel" className="input input-bordered w-full" placeholder="Phone Number" />
-                        </fieldset>
-
-                        <fieldset className="fieldset">
-                            <legend className="fieldset-legend">Website</legend>
-                            <input name="website" type="url" className="input input-bordered w-full" placeholder="Website" />
-                        </fieldset>
-                    </div>
-
-                    <hr className="my-4" />
-                    <h2 className="text-lg font-semibold mb-0">Address</h2>
-
-                    <div className="grid grid-cols-1 md:grid-cols-6 gap-4 mt-4">
-                        <fieldset className="fieldset md:col-span-6">
-                            <legend className="fieldset-legend">Street</legend>
-                            <input name="street" type="text" className="input input-bordered w-full" placeholder="Street Address" />
-                        </fieldset>
-
-                        <fieldset className="fieldset md:col-span-3">
-                            <legend className="fieldset-legend">City</legend>
-                            <input name="city" type="text" className="input input-bordered w-full" placeholder="City" />
-                        </fieldset>
-
-                        <fieldset className="fieldset md:col-span-1">
-                            <legend className="fieldset-legend">State</legend>
-                            <input name="state" type="text" className="input input-bordered w-full" placeholder="State" />
-                        </fieldset>
-
-                        <fieldset className="fieldset md:col-span-2">
-                            <legend className="fieldset-legend">Postal Code</legend>
-                            <input name="postalCode" type="text" className="input input-bordered w-full" placeholder="Postal Code" />
-                        </fieldset>
-
-                        <fieldset className="fieldset md:col-span-2">
-                            <legend className="fieldset-legend">Country</legend>
-                            <input name="country" type="text" className="input input-bordered w-full" placeholder="Country" defaultValue="USA" />
-                        </fieldset>
+                        </div>
                     </div>
 
                     <hr className="my-4" />

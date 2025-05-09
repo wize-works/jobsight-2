@@ -1,10 +1,22 @@
 import { getProgressColorClass } from "@/lib/styles";
 import { getProjectStatusMeta } from "@/lib/enums";
+import Link from "next/link";
+import { getClientById } from "../../actions/queries";
 
 
-export const ProjectOverview = ({ project }) => {
+export const ProjectOverview = async ({ project }) => {
     const { name, status, progress, description, createdAt, address, client, budget, updatedAt, location } = project;
     const statusMeta = getProjectStatusMeta(status);
+
+    // Fetch client details if client ID exists
+    let clientData = null;
+    if (client) {
+        try {
+            clientData = await getClientById(client);
+        } catch (error) {
+            console.error("Error fetching client data:", error);
+        }
+    }
 
     // Format currency for budget
     const formattedBudget = budget ? new Intl.NumberFormat('en-US', {
@@ -25,7 +37,7 @@ export const ProjectOverview = ({ project }) => {
                             <p>{description || "No description provided"}</p>
 
                             <h4 className="font-semibold text-lg mt-4">Client</h4>
-                            <p>{client || "Not specified"}</p>
+                            <p>{clientData ? <Link href={`/clients/${client}`} className="text-primary text-lg hover:underline">{clientData.name}<i className="far fa-up-right-from-square ml-2"></i></Link> : "Not specified"}</p>
 
                             <h4 className="font-semibold text-lg mt-4">Budget</h4>
                             <p>{formattedBudget}</p>

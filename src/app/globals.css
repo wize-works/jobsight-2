@@ -23,6 +23,10 @@
     @apply focus:textarea-primary;
 }
 
+.validator-hint {
+    @apply mt-0;
+}
+
 .container {
     width: 100%;
 }

@@ -3,7 +3,7 @@ const service = 'wize-organization';
 
 export const createNewClient = async (client) => {
     const query = `
-        mutation ($input: Client!) {
+        mutation ($input: ClientInput!) {
             createClient(input: $input) {
                 _id
                 name
@@ -27,7 +27,7 @@ export const createNewClient = async (client) => {
 
 export const updateClient = async (id, client) => {
     const query = `
-        mutation ($id: ID!, $input: Client!) {
+        mutation ($id: ID!, $input: ClientInput!) {
             updateClient(id: $id, input: $input) {
                 _id
                 name
@@ -47,4 +47,39 @@ export const updateClient = async (id, client) => {
     else {
         throw new Error('Failed to update client');
     }
+};
+
+export const generateUploadUrl = async (fileName, type) => {
+    const query = `
+        mutation ($type: UploadType!, $fileName: String!) {
+            generateUploadUrl(type: $type, fileName: $fileName) {
+                uploadUrl
+            }
+        }
+    `;
+
+    const results = await executeGraphQL('wize-media', query, { fileName, type });
+
+    return results.generateUploadUrl;
+};
+
+export const registerImage = async (fileName, mimeType, url) => {
+    const query = `
+        mutation ($input: ImageInput!) {
+            registerImage(input: $input) {
+                _id
+                url
+            }
+        }
+    `;
+
+    const { registerImage } = await executeGraphQL('wize-media', query, {
+        input: {
+            fileName,
+            mimeType,
+            url,
+        },
+    });
+
+    return registerImage;
 };

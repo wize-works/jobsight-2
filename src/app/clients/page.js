@@ -1,13 +1,12 @@
 import { Filter } from "./components/filter";
 import { Pagination } from "./components/pagination";
 import { Header } from "./components/header";
-
-import { getProjects, getProjectCounts } from "./actions/queries";
+import { getClients, getClientCounts } from "./actions/queries";
 import { Card } from "./components/card";
 import { Table } from "./components/table";
-import { getProjectStatusMeta } from "@/lib/enums";
+import { getClientStatusMeta } from "@/lib/enums";
 
-export const ProjectsPage = async ({ searchParams }) => {
+export const ClientsPage = async ({ searchParams }) => {
     let { view, page, filter } = await searchParams || {};
     view = view || "grid";
     page = Number(page) || 1;
@@ -20,9 +19,9 @@ export const ProjectsPage = async ({ searchParams }) => {
         graphqlQuery = { status_eq: filter };
     }
 
-    const counts = await getProjectCounts();
+    const counts = await getClientCounts();
 
-    const results = await getProjects({
+    const results = await getClients({
         options: {
             filter: graphqlQuery,
             sort: { createdAt: "DESC" },
@@ -41,76 +40,78 @@ export const ProjectsPage = async ({ searchParams }) => {
                 <div className="card bg-base-100 shadow-lg p-6">
                     <div className="flex flex-row items-center">
                         <div className="bg-neutral/20 rounded-full w-12 h-12 flex items-center justify-center">
-                            <i className="far fa-calculator text-xl text-neutral"></i>
+                            <i className="far fa-building text-xl text-neutral"></i>
                         </div>
                         <div className="flex flex-col items-left ml-2">
                             <p className="text-3xl font-bold">{counts.total.count}</p>
-                            <p className="text-sm font-semibold mb-0">Total Projects</p>
+                            <p className="text-sm font-semibold mb-0">Total Clients</p>
                         </div>
                     </div>
                 </div>
                 <div className="card bg-base-100 shadow-lg p-6">
                     <div className="flex flex-row items-center">
-                        <div className={`${getProjectStatusMeta("planning").iconBackground} rounded-full w-12 h-12 flex items-center justify-center`}>
-                            <i className={`${getProjectStatusMeta("planning").icon} text-xl ${getProjectStatusMeta("planning").iconColor}`}></i>
+                        <div className={`${getClientStatusMeta("active").iconBackground} rounded-full w-12 h-12 flex items-center justify-center`}>
+                            <i className={`${getClientStatusMeta("active").icon} text-xl ${getClientStatusMeta("active").iconColor}`}></i>
                         </div>
                         <div className="flex flex-col items-left ml-2">
-                            <p className="text-3xl font-bold">{counts.planning.count}</p>
-                            <p className="text-sm font-semibold mb-0">Planning</p>
+                            <p className="text-3xl font-bold">{counts.active.count}</p>
+                            <p className="text-sm font-semibold mb-0">Active</p>
                         </div>
                     </div>
                 </div>
                 <div className="card bg-base-100 shadow-lg p-6">
                     <div className="flex flex-row items-center">
-                        <div className={`${getProjectStatusMeta("in_progress").iconBackground} rounded-full w-12 h-12 flex items-center justify-center`}>
-                            <i className={`${getProjectStatusMeta("in_progress").icon} text-xl ${getProjectStatusMeta("in_progress").iconColor}`}></i>
+                        <div className={`${getClientStatusMeta("inactive").iconBackground} rounded-full w-12 h-12 flex items-center justify-center`}>
+                            <i className={`${getClientStatusMeta("inactive").icon} text-xl ${getClientStatusMeta("inactive").iconColor}`}></i>
                         </div>
                         <div className="flex flex-col items-left ml-2">
-                            <p className="text-3xl font-bold">{counts.inProgress.count}</p>
-                            <p className="text-sm font-semibold mb-0">In Progress</p>
+                            <p className="text-3xl font-bold">{counts.inactive.count}</p>
+                            <p className="text-sm font-semibold mb-0">Inactive</p>
                         </div>
                     </div>
                 </div>
                 <div className="card bg-base-100 shadow-lg p-6">
                     <div className="flex flex-row items-center">
-                        <div className={`${getProjectStatusMeta("on_hold").iconBackground} rounded-full w-12 h-12 flex items-center justify-center`}>
-                            <i className={`${getProjectStatusMeta("on_hold").icon} text-xl ${getProjectStatusMeta("on_hold").iconColor}`}></i>
+                        <div className={`${getClientStatusMeta("prospect").iconBackground} rounded-full w-12 h-12 flex items-center justify-center`}>
+                            <i className={`${getClientStatusMeta("prospect").icon} text-xl ${getClientStatusMeta("prospect").iconColor}`}></i>
                         </div>
                         <div className="flex flex-col items-left ml-2">
-                            <p className="text-3xl font-bold">{counts.onHold.count}</p>
-                            <p className="text-sm font-semibold mb-0">On Hold</p>
+                            <p className="text-3xl font-bold">{counts.prospect.count}</p>
+                            <p className="text-sm font-semibold mb-0">Prospects</p>
                         </div>
                     </div>
                 </div>
             </div>
             <Header />
             <Filter currentView={view} currentFilter={filter} />
+
             {data.length === 0 ? (
                 <div className="w-full text-center py-8">
                     <div className="card bg-base-100 shadow-lg p-8">
-                        <h3 className="text-lg font-semibold mb-2">No projects found</h3>
-                        <p className="mb-4">There are no projects matching your current filter criteria.</p>
+                        <h3 className="text-lg font-semibold mb-2">No clients found</h3>
+                        <p className="mb-4">There are no clients matching your current filter criteria.</p>
                         <a href="/clients/new" className="btn btn-primary mx-auto">
-                            <i className="fas fa-plus mr-2" />New Project
+                            <i className="fas fa-plus mr-2" />New Client
                         </a>
                     </div>
                 </div>
             ) : view === "grid" ? (
                 <div className="w-full">
                     <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">
-                        {data.map((project, index) => (
-                            <Card key={index} project={project} />
+                        {data.map((client, index) => (
+                            <Card key={index} client={client} />
                         ))}
                     </div>
                 </div>
             ) : (
                 <div className="min-w-full">
-                    <Table projects={data} />
+                    <Table clients={data} />
                 </div>
             )}
+
             <Pagination currentPage={page} totalPages={totalPages} />
         </div>
     );
 };
 
-export default ProjectsPage;
+export default ClientsPage;

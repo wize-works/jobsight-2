@@ -78,12 +78,12 @@ export const Sidebar = () => {
                     <NavSection title="Main" isCollapsed={isCollapsed}>
                         <NavItem href="/dashboard" key="dashboard" icon="fa-regular fa-rectangles-mixed" text="Dashboard" isCollapsed={isCollapsed} />
                         <NavItem href="/projects" key="projects" icon="fa-regular fa-building" text="Projects" isCollapsed={isCollapsed} />
-                        <NavItem href="/organizations" key="organizations" icon="fa-regular fa-building-user" text="Organizations" isCollapsed={isCollapsed} />
+                        <NavItem href="/tasks" key="tasks" icon="fa-regular fa-list-check" text="Tasks" isCollapsed={isCollapsed} />
                         <NavItem href="/logs" key="logs" icon="fa-regular fa-clipboard-list" text="Daily Logs" isCollapsed={isCollapsed} />
                         <NavItem href="/invoicing" key="invoicing" icon="fa-regular fa-file-invoice-dollar" text="Invoicing" isCollapsed={isCollapsed} isNew={true} />
-                        <NavItem href="/equipment" key="equipment" icon="fa-regular fa-truck-field" text="Equipment" isCollapsed={isCollapsed} />
+                        <NavItem href="/clients" key="clients" icon="fa-regular fa-building-user" text="Clients" isCollapsed={isCollapsed} />
                         <NavItem href="/team" key="team" icon="fa-regular fa-user-group" text="Team" isCollapsed={isCollapsed} />
-                        <NavItem href="/tasks" key="tasks" icon="fa-regular fa-list-check" text="Tasks" isCollapsed={isCollapsed} />
+                        <NavItem href="/equipment" key="equipment" icon="fa-regular fa-truck-field" text="Equipment" isCollapsed={isCollapsed} />
                     </NavSection>
 
                     <NavSection title="TOOLS" isCollapsed={isCollapsed}>

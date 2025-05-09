@@ -33,8 +33,11 @@ export const executeGraphQL = async (service, query, variables = {}) => {
     try {
         const cleanedVariables = await deepClean(variables);
 
-        //let API_URL = `https://api.wize.works/${service}/graphql`;
-        let API_URL = "http://localhost:3005/graphql"; // For local development
+        let API_URL = `https://api.wize.works/${service}/graphql`;
+
+        if (service === 'wize-organization') {
+            API_URL = "http://localhost:3015/graphql";
+        }
         const body = JSON.stringify({
             query: query,
             variables: cleanedVariables, //deepClean(variables),

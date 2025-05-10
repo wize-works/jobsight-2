@@ -18,6 +18,42 @@ export const getProjectStatusMeta = (status) => {
     return statusMeta || { label: "Unknown", badge: "bg-neutral/20 ", icon: "fas fa-question", iconColor: "text-neutral", iconBackground: "bg-neutral/20" };
 }
 
+// Task status options
+export const TASK_STATUS_OPTIONS = [
+    { value: "pending", label: "Pending", badge: "badge-warning", icon: "far fa-clock", iconColor: "text-warning", iconBackground: "bg-warning/20" },
+    { value: "in_progress", label: "In Progress", badge: "badge-info", icon: "far fa-loader", iconColor: "text-info", iconBackground: "bg-info/20" },
+    { value: "completed", label: "Completed", badge: "badge-success", icon: "far fa-check-circle", iconColor: "text-success", iconBackground: "bg-success/20" },
+    { value: "on_hold", label: "On Hold", badge: "badge-warning", icon: "far fa-pause", iconColor: "text-warning", iconBackground: "bg-warning/20" },
+    { value: "cancelled", label: "Cancelled", badge: "badge-error", icon: "far fa-times", iconColor: "text-error", iconBackground: "bg-error/20" },
+    { value: "blocked", label: "Blocked", badge: "badge-error", icon: "far fa-ban", iconColor: "text-error", iconBackground: "bg-error/20" },
+];
+
+export const TASK_STATUSES = Object.fromEntries(
+    TASK_STATUS_OPTIONS.map((status) => [status.value, status.label])
+);
+
+export const getTaskStatusMeta = (status) => {
+    const statusMeta = TASK_STATUS_OPTIONS.find((s) => s.value === status);
+    return statusMeta || { label: "Unknown", badge: "bg-neutral/20", icon: "fas fa-question", iconColor: "text-neutral", iconBackground: "bg-neutral/20" };
+}
+
+// Task priority options
+export const TASK_PRIORITY_OPTIONS = [
+    { value: "urgent", label: "Urgent", badge: "badge-error", icon: "far fa-exclamation-triangle", iconColor: "text-error", iconBackground: "bg-error/20" },
+    { value: "high", label: "High", badge: "badge-warning", icon: "far fa-arrow-up", iconColor: "text-warning", iconBackground: "bg-warning/20" },
+    { value: "normal", label: "Normal", badge: "badge-info", icon: "far fa-minus", iconColor: "text-info", iconBackground: "bg-info/20" },
+    { value: "low", label: "Low", badge: "badge-success", icon: "far fa-arrow-down", iconColor: "text-success", iconBackground: "bg-success/20" },
+];
+
+export const TASK_PRIORITIES = Object.fromEntries(
+    TASK_PRIORITY_OPTIONS.map((priority) => [priority.value, priority.label])
+);
+
+export const getTaskPriorityMeta = (priority) => {
+    const priorityMeta = TASK_PRIORITY_OPTIONS.find((p) => p.value === priority);
+    return priorityMeta || { label: "Normal", badge: "badge-info", icon: "far fa-minus", iconColor: "text-info", iconBackground: "bg-info/20" };
+}
+
 // Client status options
 export const CLIENT_STATUS_OPTIONS = [
     { value: "active", label: "Active", badge: "badge-success", icon: "far fa-check-circle", iconColor: "text-success", iconBackground: "bg-success/20" },

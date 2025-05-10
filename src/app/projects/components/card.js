@@ -7,15 +7,17 @@ import { getClientById } from "../actions/queries";
 
 export const Card = async ({ project }) => {
     const status = getProjectStatusMeta(project.status);
-    
+
     // Fetch client data if client ID exists
     let clientData = null;
-    if (project.client) {
+    if (project.client && /^[a-fA-F0-9]{24}$/.test(project.client)) {
         try {
             clientData = await getClientById(project.client);
         } catch (error) {
             console.error("Error fetching client data:", error);
         }
+    } else if (project.client) {
+        console.warn("Invalid client ID format:", project.client);
     }
 
     return (

@@ -42,7 +42,7 @@ export const executeGraphQL = async (service, query, variables = {}) => {
             query: query,
             variables: cleanedVariables, //deepClean(variables),
         });
-        console.log('body', body);
+
         const response = await fetch(API_URL, {
             method: 'POST',
             headers: {

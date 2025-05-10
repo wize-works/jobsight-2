@@ -5,6 +5,7 @@ import { getClients, getClientCounts } from "./actions/queries";
 import { Card } from "./components/card";
 import { Table } from "./components/table";
 import { getClientStatusMeta } from "@/lib/enums";
+import Link from "next/link";
 
 export const ClientsPage = async ({ searchParams }) => {
     let { view, page, filter } = await searchParams || {};
@@ -90,9 +91,9 @@ export const ClientsPage = async ({ searchParams }) => {
                     <div className="card bg-base-100 shadow-lg p-8">
                         <h3 className="text-lg font-semibold mb-2">No clients found</h3>
                         <p className="mb-4">There are no clients matching your current filter criteria.</p>
-                        <a href="/clients/new" className="btn btn-primary mx-auto">
+                        <Link href="/clients/new" className="btn btn-primary mx-auto">
                             <i className="fas fa-plus mr-2" />New Client
-                        </a>
+                        </Link>
                     </div>
                 </div>
             ) : view === "grid" ? (

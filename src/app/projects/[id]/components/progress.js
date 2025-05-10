@@ -25,20 +25,21 @@ export const ProgressWidget = ({ project }) => {
             const data = { ...project };
             data.progress = updatedProgress;
             delete data._id;
-            console.log('id', project._id, 'data', data);
+
             // Then send update to the server
-            const res1 = await fetch('/api/wize-project', {
+            const res1 = await fetch('/api', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
+                    server: 'wize-project',
                     query: `
-              mutation ($id: ID! $input: ProjectInput!) {
-                updateProject(id: $id, input: $input) {
-                _id
-                name
-                progress
+                mutation ($id: ID! $input: ProjectInput!) {
+                    updateProject(id: $id, input: $input) {
+                    _id
+                    name
+                    progress
+                    }
                 }
-              }
             `,
                     variables: { id: project._id, input: data },
                 }),

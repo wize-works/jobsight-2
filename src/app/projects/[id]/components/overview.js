@@ -11,10 +11,14 @@ export const ProjectOverview = async ({ project }) => {
     // Fetch client details if client ID exists
     let clientData = null;
     if (client) {
-        try {
-            clientData = await getClientById(client);
-        } catch (error) {
-            console.error("Error fetching client data:", error);
+        if (project.client && /^[a-fA-F0-9]{24}$/.test(project.client)) {
+            try {
+                clientData = await getClientById(project.client);
+            } catch (error) {
+                console.error("Error fetching client data:", error);
+            }
+        } else if (project.client) {
+            console.warn("Invalid client ID format:", project.client);
         }
     }
 

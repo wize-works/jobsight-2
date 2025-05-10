@@ -43,8 +43,8 @@ export const ClientsNewPage = () => {
     return (
         <div className="space-y-1">
             <form action={submitForm}>
-                <div className='flex items-center mb-4 text-secondary'>
-                    <Link href="/clients" className="">
+                <div className='flex items-center mb-4'>
+                    <Link href="/clients" className="btn">
                         <i className="fas fa-arrow-left mr-2"></i>
                         Back to Clients
                     </Link>
